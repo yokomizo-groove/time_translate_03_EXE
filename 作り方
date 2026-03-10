@@ -60,3 +60,19 @@ tool_name
  │   └ config.yaml
  └ assets
      └ logo.png
+
+
+起動フロー
+ユーザー
+ ↓
+start.vbs
+ ↓
+start.bat
+ ↓
+python\python.exe
+ ↓
+streamlit
+ ↓
+ui/app.py
+ ↓
+ブラウザ表示
