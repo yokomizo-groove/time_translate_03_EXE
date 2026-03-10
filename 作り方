@@ -1,0 +1,45 @@
+my_streamlit_app
+ ├ run_app.vbs
+ ├ run_app.bat
+ ├ python
+ ├ ui
+ │   └ app.py
+ └ logic
+
+ui/app.py   → Streamlit画面
+logic       → 処理ロジック
+python      → 同梱Python
+
+python-3.12-embed-amd64.zip
+
+my_streamlit_app/python
+
+python312._pth
+
+python312.zip
+.
+import site
+
+python.exe get-pip.py
+
+python.exe -m pip install streamlit pandas numpy openpyxl
+
+.batファイル
+@echo off
+cd /d %~dp0
+python\python.exe -m streamlit run ui/app.py
+
+.vbsファイル
+Set WshShell = CreateObject("WScript.Shell")
+WshShell.Run "run_app.bat", 0
+Set WshShell = Nothing
+
+
+内部構成
+tool_name
+ ├ start.vbs
+ ├ start.bat
+ ├ python
+ ├ ui
+ ├ logic
+ └ data
