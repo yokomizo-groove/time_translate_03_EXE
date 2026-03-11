@@ -271,3 +271,12 @@ today = datetime.today().strftime("%Y%m%d")
 
 filename = f"output/勤務分析_{today}.xlsx"
 
+
+2026/3/11の最後の提案
+① CSVの自動月チェック（11月→12月など）
+② 従業員番号ごとのソート
+③ 勤怠異常の自動検出
+④ Excel出力（シート複数）
+⑤ 処理ログ表示
+
+
