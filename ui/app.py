@@ -7,12 +7,19 @@ import time
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-from ui.load_data_files import load_csv_files
-from ui.check_data_shape import check_header, check_row_structure, check_date_continuity
-from ui.merge_and_sort import merge_and_sort
-from logic.load_file import load_file
-from logic.time_to_number import time_to_number
-from logic.export_file import to_excel_xlsxwriter, to_excel_fast_numpy, to_csv_fast
+from file_system.load_data_files import load_csv_files
+from file_system.export_file import to_excel_xlsxwriter, to_excel_fast_numpy, to_csv_fast
+
+from data_cleansing.check_data_shape import check_header, check_row_structure, check_date_continuity
+from data_cleansing.merge_and_sort import merge_and_sort
+from data_cleansing.time_to_number import time_to_number
+
+from basic_check.basic_check import run_basic_checks, results_to_dataframe
+
+from config.org_master import load_org_master, get_org_info, convert_department
+
+
+
 
 # ★ 高速 xlsxwriter 版 Excel 変換関数
 #def to_excel_xlsxwriter(df):
@@ -55,6 +62,35 @@ def main():
 
     st.write("Translating time to numerics ...")
     final_array, headers = time_to_number(base_df)
+    st.write("時間変換処理完了（-t 列追加）")
+    # st.write(headers)
+    # st.stop()
+
+    
+    # ③ 基本チェック実行
+    results = run_basic_checks(final_array, headers)
+    st.write(f"チェック件数：{len(results)} 件")
+    # ④ DataFrame に変換
+    df_out = results_to_dataframe(results, headers)
+
+    # ⑤ ダウンロードボタン
+    csv_bytes = df_out.to_csv(index=False, encoding="cp932").encode("cp932")
+
+
+    st.download_button(
+        label="チェック結果をCSVでダウンロード",
+        data=csv_bytes,
+        file_name="check_results.csv",
+        mime="text/csv"
+    )
+
+    st.write("処理完了！")
+
+  
+    org_dict = load_org_master()
+    st.success("Load org_master")
+    org_order, org_name = get_org_info(11, org_dict)
+    st.write(org_order, org_name)
 
     csv_bytes = to_csv_fast(final_array, headers)
 
@@ -64,6 +100,9 @@ def main():
         file_name="temp_output.csv",
         mime="text/csv"
     )
+
+
+
 
       
         
